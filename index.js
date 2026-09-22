@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 
 const moderar = require("./commands/setup-moderacao");
+const ban = require("./buttons/ban.js");
 
 const client = new Client({
     intents: [
@@ -18,10 +19,22 @@ client.once("clientReady", () => {
 
 client.on("interactionCreate", async (interaction) => {
 
-    if (!interaction.isChatInputCommand()) return;
+    if (interaction.isChatInputCommand()){
+        if (interaction.commandName === "moderacao") {
+            await moderar.execute(interaction);
+        }
+    }
 
-    if (interaction.commandName === "moderacao") {
-        await moderar.execute(interaction);
+    if (interaction.isButton()){
+        if (interaction.customId === "ban"){
+            await ban.execute(interaction);
+        }
+    }
+
+    if (interaction.isButton()){
+        if (interaction.customId === "confirmar"){
+            await confirmar.execute(interaction);
+        }
     }
 });
 
